@@ -1,0 +1,31 @@
+int main() {
+
+	int shu;
+	int num1 = 0;
+	int num2 = 0;
+	int sumj = 0;
+	int sumo = 0;
+	double average1=0.0;
+	double average2=0.0;
+
+	while (1) {
+		printf("输入整数：\n");
+		scanf_s("%d", &shu);
+		if (shu != 0) {
+			if (shu % 2 == 0) {
+				num1++;
+				sumo = sumo + shu;
+				average1 = sumo / (double)num1;
+			}
+			else {
+				num2++;
+				sumj =sumj+ shu;
+				average2 = sumj / (double)num2;
+			}
+		}
+		else break;
+	}
+	printf("偶数之和为%d，个数为%d，平均值为%g\n",sumo,num1,average1);
+	printf("奇数之和为%d，个数为%d，平均值为%g\n", sumj, num2, average2);
+
+}
