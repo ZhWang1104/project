@@ -1,0 +1,418 @@
+/*
+制作：自动化20级6班王志
+功能实现：可自定义输入人数 
+基本实现学生信息的输入存储 包括姓名，学号，电话号码，两门课成绩 
+可以完成学生学习的查询（根据姓名或学号查询），添加，删除(按学号或按姓名)
+可对单科成绩排序，并求出该科最高分
+可对总成绩排序，求出最高分
+可实现求个人平均分 
+ */
+
+#include<stdio.h>
+#include<string.h> 
+#include<stdlib.h>
+
+struct Student                      /*定义一个结构体*/
+{
+	char Name[100];                /*姓名*/
+	char Tel[12];                  /*电话*/
+	int Num;                       /*学号*/
+	float Score[2];                /*两科成绩*/
+	float Total;                   /*总分*/
+	float Ave;                     /*平均分*/
+};
+
+int num; //全局变量 学生人数
+
+int Num(void);                                               //函数声明 
+ 
+struct Student* Input(struct Student *STs, int len);     //输入函数，输入学生的信息
+ 
+void Output(struct Student *STs, int len);               //输出函数，输出学生的信息
+ 
+void Delete(struct Student *STs, int len);               //删除函数，删除学生信息
+
+void Search(struct Student *STs, int len);               //查找函数，查找结构体
+ 
+void Add(struct Student *STs, int len);                  //添加函数,添加学生信息
+ 
+void ScoreCL(struct Student *STs, int len);              //排序函数，用于对C语言成绩排序
+ 
+void ScoreMath(struct Student *STs, int len);            //排序函数，用于对高数成绩排序      
+ 
+void ScoreTotal(struct Student *STs, int len);          //排序函数，用于对总成绩排序
+ 
+ 
+ 
+ int main()
+{
+	int num, Item;
+	struct Student *STs = NULL;
+	struct Student *p = NULL;
+ 
+	printf("---------------------------------------------------------\n\n");
+	printf("***************欢迎使用学生成绩管理系统******************\n\n");
+	printf("-----------------------------制作：自动化20级6班王志-----\n\n");
+	
+ while (1)
+	{
+	printf("===========================================================\n");
+	printf("|                请选择要操作的命令：                     |\n");
+	printf("|               1 输入学生信息                            |\n");
+	printf("|               2 输出学生信息                            |\n");
+	printf("|               3 删除学生信息                            |\n");
+	printf("|               4 查找学生信息                            |\n");
+	printf("|               5 增加学生信息                            |\n");
+	printf("|               6 将学生的C语言成绩排序并求最高分         |\n");
+	printf("|               7 将学生的高数成绩排序并求最高分          |\n");
+    printf("|               8 将学生的总成绩排序并求最高分            |\n");
+    printf("|               9 退出系统                                |\n");
+	printf("===========================================================\n");
+ 
+	
+		printf("\n请选择操作命令;\n");
+		scanf("%d", &Item);
+ 
+		switch (Item)
+		{
+		     case 1://输入学生信息
+			{
+				num = Num();
+				p = Input(STs, num);
+			}
+			break;
+ 
+		    case 2://输出学生信息
+			{
+				Output(p, num);
+			}
+			break;
+ 
+		     case 3://删除学生信息
+			{
+				Delete(p, num);
+				num--; 
+			}
+			break;
+ 
+		     case 4://查找学生信息
+			{
+				Search(p, num);
+			}
+			break;
+ 
+ 
+		     case 5://添加学生信息
+			{
+				
+				Add(p, num);
+			}
+			break;
+ 
+		    case 6://将学生的C语言成绩按从大到小排序
+			{
+				ScoreCL(p,num);
+			}
+			break;
+ 
+			case 7://将学生的高数成绩按从大到小排序
+				{
+					ScoreMath(p, num);
+				}
+				break;
+
+			case 8://将学生的总成绩按从大到小排序
+				{
+					ScoreTotal(p, num);
+				}
+				break;
+			case 9: { //退出程序 
+			  printf("欢迎再次使用！"); 
+			         exit(0); 
+		       	break;
+			} 
+			default :printf("无效操作！\n") ;
+		}
+	}
+	return 0;
+}
+ 
+//得到学生人数
+int Num(void)
+{
+	printf("请输入学生的人数\n");
+	scanf("%d", &num);
+ 
+	return num;//返回学生人数
+}
+ struct Student* Input(struct Student *STs, int len)/*定义一个输入函数，用于输入学生的信息*/
+{
+	STs = (struct Student*)malloc(len*sizeof(struct Student));/*为学生分配内存*/
+ 
+	int i;
+ 
+	for (i = 0; i <len; i++)
+	{
+		printf("请输入第%d个学生的姓名:\n", i+1);/*输入学生的姓名*/
+		scanf("%s", STs[i].Name);
+ 
+		printf("请输入第%d个学生的电话:\n", i+1);/*输入学生的电话*/
+		scanf("%s", &STs[i].Tel);
+ 
+		printf("请输入第%d个学生的学号:\n",i+1);/*输入学生的学号*/
+		scanf("%d", &STs[i].Num);
+ 
+		printf("请输入第%d个学生的C语言成绩:\n", i+1);/*输入学生的C语言成绩*/
+		scanf("%f", &STs[i].Score[0]);
+ 
+		printf("请输入第%d个学生的高数成绩:\n", i+1);/*输入学生的高数成绩*/
+		scanf("%f", &STs[i].Score[1]);
+ 
+	
+ 
+		//计算总分
+		STs[i].Total = STs[i].Score[0] + STs[i].Score[1] ;
+ 
+		//计算平均分
+		STs[i].Ave = STs[i].Total /  2.0f;
+ 
+	}
+ 
+	return STs;   /*返回学生的信息*/
+}
+
+/*定义一个输出函数，用于输出学生的信息*/
+void Output(struct Student *STs, int len)
+{
+	printf("姓名\t电话\t\t\t学号\tC语言\t高数\t总分\t平均分\n");
+ 
+	for (int i = 0; i < len; i++)
+	{
+		printf("%s\t%s\t\t%d\t%g\t%g\t%g\t%g\n", STs[i].Name, STs[i].Tel, STs[i].Num, STs[i].Score[0], STs[i].Score[1], STs[i].Total, STs[i].Ave);
+	}
+}
+void Delete(struct Student *STs, int len)
+{
+	int i,Num1,c;
+	int cha=1111111;
+	char Name[10];
+    printf("\n1 按姓名删除\n");
+    printf("2 按学号删除\n");
+    scanf("%d",&c);
+    switch(c){
+    	case 1:{
+    		printf("请输入你需要删除的学生的姓名\n");
+	    scanf("%s", Name);//得到学生的姓名
+	    
+	for (i = 0; i < len; i++)//查找学生编号
+	{
+		if (0 == strcmp(STs[i].Name, Name))
+		{
+			cha = i;	
+		}
+		else if(cha==1111111)  printf("查无此人！\n"); 
+	}
+			break;
+		}
+		case 2:{
+			printf("请输入你需要删除的学生的学号\n");
+	scanf("%d", &Num1);//得到学生的学号 
+ 
+	for (i = 0; i < len; i++)//查找学生编号
+	{
+		if (STs[i].Num==Num1)
+		{
+			cha = i;
+		}
+          else if(cha==1111111)  printf("查无此人！\n"); 
+	}
+			break;
+		}
+		default :printf("无效操作！\n"); 
+	}
+	
+ 
+	for (i = cha; i < len; i++)//删除学生
+	{
+		STs[i - 1] = STs[i];
+	}
+	Output(STs, len - 1);//输出删除后的结果
+}
+ /*定义一个查找函数，用于查找结构体*/
+void Search(struct Student *STs, int len)
+{
+	int i,Num1,c;
+	int cha=1111111;
+	char Name[10];
+    printf("\n1 按姓名查询\n");
+    printf("2 按学号查询\n");
+    scanf("%d",&c);
+    switch(c){
+    	case 1:{
+    		printf("请输入你需要查找的学生的姓名\n");
+	    scanf("%s", Name);//得到学生的姓名
+	    
+	for (i = 0; i < len; i++)//查找学生编号
+	{
+		if (0 == strcmp(STs[i].Name, Name))
+		{
+			cha = i;
+			Output(&STs[cha],1);//输出找到的学生的信息
+			
+		}
+		 if(cha==1111111)  printf("查无此人！\n"); 
+	}
+			break;
+		}
+		case 2:{
+		printf("请输入你需要查找的学生的学号\n");
+	scanf("%d", &Num1);//得到学生的学号 
+ 
+	for (i = 0; i < len; i++)//查找学生编号
+	{
+		if (STs[i].Num==Num1)
+		{
+			cha = i;
+			Output(&STs[cha],1);//输出找到的学生的信息
+		}
+          else if(cha==1111111);  //printf("查无此人！\n"); 
+	}
+			break;
+		}
+		default :printf("无效操作！\n"); 
+	}
+}
+ //定义一个函数,用于添加学生信息
+void Add(struct Student *STs, int len)
+{
+	int num,i;
+ 
+	printf("请输入添加的学生的人数:\n");
+	scanf("%d", &num);
+ 
+	struct Student *p = NULL;
+ 
+	//动态分配num个内存空间
+	p = (struct Student*)malloc(sizeof(struct Student)*num);
+ 
+	for (i = 0; i < num; i++)
+	{
+		printf("请输入第%d个学生的姓名:\n", i + 1);                 /*输入学生的姓名*/
+		scanf("%s", p[i].Name);
+ 
+		printf("请输入第%d个学生的电话:\n", i + 1);                /*输入学生的电话*/
+		scanf("%s", &p[i].Tel); 
+ 
+		printf("请输入第%d个学生的学号:\n", i + 1);                /*输入学生的学号*/
+		scanf("%d", &p[i].Num);
+ 
+		printf("请输入第%d个学生的C语言成绩:\n", i + 1);           /*输入学生的C语言成绩*/
+		scanf("%f",&p[i].Score[0]);
+ 
+		printf("请输入第%d个学生的高数成绩:\n", i + 1);            /*输入学生的高数成绩*/
+		scanf("%f", &p[i].Score[1]);
+ 
+		//计算总分
+		p[i].Total = p[i].Score[0] + p[i].Score[1] ;
+ 
+		//计算平均分
+		p[i].Ave = p[i].Total / 2.0f;
+	}
+ 	Output(STs, len);//输出学生信息
+	Output(p, num);//输出学生信息
+
+}
+ 
+/*定义一个排序函数，用于对C语言成绩排序*/
+void ScoreCL(struct Student *STs, int len)
+{
+	struct Student temp;//中间变量
+ 
+	for (int i = 0; i < len - 1; i++)//冒泡排序
+	{
+		for (int j = i+1; j < len; j++)
+		{
+			if (STs[i].Score[0] < STs[j].Score[0])//对C语言成绩从大到小排序
+			{
+				temp = STs[i];
+				STs[i] = STs[j];
+				STs[j ] = temp;
+			}
+		}
+	}
+	Output(STs, len);//输出排序后的结果
+	printf("C语言最高分为：\n%s\t%s\t\t%d\t%g\t%g\t%g\t%g\n", STs[0].Name, STs[0].Tel, STs[0].Num, STs[0].Score[0], STs[0].Score[1], STs[0].Total, STs[0].Ave);//输出最高分 
+}
+ 
+/*定义一个排序函数，用于对高数成绩排序*/
+void ScoreMath(struct Student *STs, int len)
+{
+	struct Student temp;//中间变量
+ 
+	for (int i = 0; i < len - 1; i++)//冒泡排序
+	{
+		for (int j = i+1; j < len ; j++)
+		{
+			if (STs[i].Score[1] < STs[j].Score[1])//对高数成绩从大到小排序
+			{
+				temp = STs[i];
+				STs[i] = STs[j];
+				STs[j ] = temp;
+			}
+		}
+	}
+ 
+	Output(STs, len);//输出排序后的结果
+	printf("高数最高分为：\n%s\t%s\t\t%d\t%g\t%g\t%g\t%g\n", STs[0].Name, STs[0].Tel, STs[0].Num, STs[0].Score[0], STs[0].Score[1], STs[0].Total, STs[0].Ave);//输出最高分
+	 
+}
+
+
+ /*定义一个排序函数，用于对总成绩排序*/
+void ScoreTotal(struct Student *STs, int len)
+{
+	struct Student temp;//中间变量
+	int max;//最大值的下标
+ 
+	for (int i = 0; i < len - 1; i++)
+	{
+		max = i;//假定总成绩的最大值的下标是i
+ 
+		for (int j = i + 1; j < len; j++)
+		{
+			if (STs[j].Total  > STs[max].Total)//查找总成绩最大值的下标
+			{
+				max = j;
+			}
+		}
+		
+ 
+		if (max != i)//排序
+		{
+			temp = STs[max];
+			STs[max] = STs[i];
+			STs[i] = temp;
+		}
+	}
+ 
+	Output(STs, len);//输出排序后的结果
+	printf("总成绩最高分为：\n%s\t%s\t\t%d\t%g\t%g\t%g\t%g\n", STs[0].Name, STs[0].Tel, STs[0].Num, STs[0].Score[0], STs[0].Score[1], STs[0].Total, STs[0].Ave);//输出最高 
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
