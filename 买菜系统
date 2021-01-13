@@ -1,0 +1,70 @@
+#include<stdio.h>
+int yl;
+int tc;
+int hl;
+int sum1 = 0;
+int sum2 = 0;
+int sum3 = 0;
+int sum = 0;
+double carpay = 0; char c;
+
+void meu();
+int main() {
+	meu();
+	
+	do
+	{
+		
+		scanf_s("%c", &c);
+		switch (c)
+		{
+		case 'a':printf("输入购买的洋蓟重量：\n");
+			scanf_s("%d", &yl);
+			sum1+=yl;
+			break;
+		case 'b':printf("输入购买的甜菜重量：\n");
+			scanf_s("%d", &tc);
+			sum2 += tc;
+			break;
+		case 'c':printf("输入购买的胡萝卜重量：\n");
+			scanf_s("%d", &hl);
+			sum3 += hl;
+			break;
+		case 'q':printf("录入完毕！\n"); 
+			break;
+
+		}
+
+	} while (c != 'q');
+	 sum= sum1 + sum2 + sum3;
+	printf("购买洋蓟   (单位：磅) :%d\n", sum1);
+	printf("购买甜菜              :%d\n",sum2);
+	printf("购买胡萝卜            :%d\n",  sum3);
+	printf("购买蔬菜总量          :%d\n",  sum);
+	double money = sum1 * 2.05 + sum2 * 1.15 + sum3 * 1.09;
+	double cut = 0;
+	if (money >= 100) {
+		money = money * 0.95;
+		cut = money * 0.05;
+	}
+
+	if (sum <= 5)                   carpay = 6.5;
+	else if (sum >= 5 && sum <= 20) carpay = 14;
+	else if (sum > 20)              carpay = 14 + (sum - 20) * 0.5;
+	printf("物品售价      ：\n洋蓟2.05 d/lb 甜菜1.15 d/lb 胡萝卜1.09d/lb\n");
+	printf("订购的重量    ：%d\n", sum);
+	printf("蔬菜总价格    ：%g\n", money+cut);
+	printf("折扣价格      ：%g\n", cut);
+	printf("折后蔬菜总价格：%g\n", money );
+	printf("运费及包装费  ：%g\n", carpay);
+	printf("总费用        ：%g", money + carpay);
+}
+
+void meu(){
+	printf("*****************************************\n");
+	printf("        ABC邮购杂货店蔬菜订购系统        \n");
+	printf("a:输入购买的洋蓟重量 b:输入购买的甜菜重量\n");
+	printf("         c:输入购买的胡萝卜重量          \n");
+	printf("              q:退出系统                 \n");
+	printf("*****************************************\n");
+	}
